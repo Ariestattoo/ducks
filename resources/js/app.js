@@ -21,6 +21,9 @@ Vue.component('remember-password', require('./components/RememberPasswordCompone
 Vue.component('reset-password', require('./components/ResetPasswordComponent.vue'));
 Vue.component('snackbar', require('./components/SnackBarComponent.vue'));
 Vue.component('gravatar', require('./components/GravatarComponent.vue'));
+Vue.component('previous-feedings', require('./components/PreviousFeedingsComponent'));
+Vue.component('pending-feedings', require('./components/PendingFeedingsComponent'));
+Vue.component('create-feeding', require('./components/CreateFeedingComponent'));
 
 window.Vuetify = require('vuetify');
 Vue.use(Vuetify)
@@ -36,6 +39,11 @@ if (window.user) {
   store.commit(mutations.USER,  user)
   store.commit(mutations.LOGGED, true)
 }
+
+if (typeof data !=='undefined') {
+  store.commit(mutations.SET_APPLICATION_DATA,  data)
+}
+
 
 const app = new Vue({
   el: '#app',

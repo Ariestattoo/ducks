@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Feeding;
+use App\Http\Requests\FeedingRequest;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class FeedingController extends Controller
@@ -27,15 +29,15 @@ class FeedingController extends Controller
         //
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
+
+  /**
+   * @param FeedingRequest $request
+   */
+  public function store(FeedingRequest $request)
     {
-        //
+      $date =  new Carbon($request->time);
+      dd($date);
+
     }
 
     /**

@@ -1,16 +1,17 @@
 @extends('layouts.app')
-
+@section('scripts')
+    <script type="application/javascript">
+      const data = @json($data)
+    </script>
+@endsection
 @section('content')
 
     <v-container fluid grid-list-md text-xs-center>
-        <v-layout row wrap>
+        <v-layout align-center justify-center column fill-height>
             <v-flex xs12>
-                <v-card>
-                    <v-card-title class="blue darken-3 white--text"><h2>Home</h2></v-card-title>
-                    <v-card-text class="px-0 mb-2 hidden-sm-and-down">
-                        Create and amazing app!
-                    </v-card-text>
-                </v-card>
+                <pending-feedings></pending-feedings>
+                <create-feeding></create-feeding>
+                <previous-feedings></previous-feedings>
             </v-flex>
         </v-layout>
     </v-container>
