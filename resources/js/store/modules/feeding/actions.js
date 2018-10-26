@@ -1,12 +1,12 @@
 import * as mutations from '../../mutation-types'
 import * as actions from '../../action-types'
-import auth from '../../../api/auth'
+import feedingApi from "../../../api/feeding";
 
 export default {
-  [ actions.CREATE_FEEDING ] (context, credentials) {
+  [ actions.CREATE_FEEDING ] (context, feeding) {
     return new Promise((resolve, reject) => {
-      auth.login(credentials).then(response => {
-        context.commit(mutations.LOGGED, true)
+      feedingApi.create_feeding(feeding).then(response => {
+        context.commit(mutations.SET_PREVIOUS_FEEDINGS, response)
         resolve(response)
       }).catch(error => {
         reject(error)

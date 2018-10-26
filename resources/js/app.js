@@ -64,12 +64,6 @@ const app = new Vue({
     updatingUser: false,
     items: [
       { icon: 'home', text: 'Home', href: '/home' },
-      { icon: 'home', text: 'Landing Page', href: '/' },
-      { icon: 'settings', text: 'Settings' },
-      { icon: 'chat_bubble', text: 'Contact' },
-      { heading: 'Links' },
-      { icon: 'link', text: 'Google', href: 'http://www.google.com' }
-      // { heading: 'Administració', role: 'Manager' }
     ]
   }),
   computed: {

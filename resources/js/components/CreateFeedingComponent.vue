@@ -10,11 +10,13 @@
 
             <v-divider></v-divider>
 
-            <v-stepper-step step="2" :complete="step2Complete" editable >When was fed</v-stepper-step>
+            <v-stepper-step step="2" :complete="step2Complete" editable>When was fed</v-stepper-step>
 
             <v-divider></v-divider>
 
-            <v-stepper-step step="3" :complete="step3Complete" editable >Where was fed</v-stepper-step>
+            <v-stepper-step step="3" :complete="step3Complete" editable>Where was fed</v-stepper-step>
+            <v-divider></v-divider>
+            <v-stepper-step step="4" editable>Summary</v-stepper-step>
           </v-stepper-header>
           <v-stepper-items>
             <v-stepper-content step="1">
@@ -29,22 +31,35 @@
                     </v-radio-group>
                   </v-flex>
                   <v-flex lg4 xs5>
-                    <h3>{{prettyPortion}}</h3>
-                  </v-flex>
-                  <v-slider class="customSlider" id="portionSlider"
-                            v-model="quantity"
-                            step="25"
-                            min="25"
-                            max="400">
-                    <template
-                        slot="thumb-label"
-                        slot-scope="props"
-                    >
+                    <h3>Amount fed</h3>
+                    <h5>{{prettyPortion}}</h5>
+                    <v-slider class="customSlider" id="portionSlider"
+                              v-model="quantity"
+                              step="25"
+                              min="25"
+                              max="400">
+                      <template
+                          slot="thumb-label"
+                          slot-scope="props"
+                      >
           <span>
             {{ label(props.value) }}
           </span>
-                    </template>
-                  </v-slider>
+                      </template>
+                    </v-slider>
+                    <v-divider></v-divider>
+                    <h3>Number of ducks fed</h3>
+                    <h5>{{duck_count}}</h5>
+                    <v-slider class="customSlider" id="countSlider"
+                              v-model="duck_count"
+                              step="1"
+                              min="1"
+                              max="100">
+
+                    </v-slider>
+                  </v-flex>
+
+
                 </v-layout>
               </v-card>
               <v-btn
@@ -89,13 +104,14 @@
                   class="mb-5"
                   color="grey lighten-1"
                   height="200px"
-              ><vuetify-google-autocomplete
-                ref="location"
-                id="map"
-                country="ca"
-                append-icon="search"
-                placeholder="Start typing"
-                v-on:placechanged="getAddressData"
+              >
+                <vuetify-google-autocomplete
+                    ref="location"
+                    id="map"
+                    country="ca"
+                    append-icon="search"
+                    placeholder="Start typing"
+                    v-on:placechanged="getAddressData"
                 >
                 </vuetify-google-autocomplete>
 
@@ -104,9 +120,69 @@
 
               <v-btn
                   color="primary"
-                  @click="e1 = 1"
+                  @click="e1 = 4"
               >
                 Continue
+              </v-btn>
+              <v-btn @click="show = false" flat>Cancel</v-btn>
+
+            </v-stepper-content>
+
+            <v-stepper-content step="4">
+              <v-card
+                  class="mb-5"
+                  color="grey lighten-1"
+                  height="200px"
+              >
+                <v-toolbar color="teal" dark>
+                  <v-toolbar-title class="text-xs-center">Summary of Feeding</v-toolbar-title>
+                </v-toolbar>
+
+                <v-list subheader>
+                  <v-list-tile>
+                    <v-list-tile-avatar>
+                      <v-icon>gavel</v-icon>
+                    </v-list-tile-avatar>
+                    <v-list-tile-content>
+                      <v-list-tile-title>{{duck_count}} ducks fed</v-list-tile-title>
+                    </v-list-tile-content>
+                  </v-list-tile>
+                  <v-list-tile>
+                    <v-list-tile-avatar>
+                      <v-icon>gavel</v-icon>
+                    </v-list-tile-avatar>
+                    <v-list-tile-content>
+                      <v-list-tile-title>{{prettyPortion}} of {{food_type}}</v-list-tile-title>
+                    </v-list-tile-content>
+                  </v-list-tile>
+                  <v-list-tile>
+                    <v-list-tile-avatar>
+                      <v-icon>gavel</v-icon>
+                    </v-list-tile-avatar>
+                    <v-list-tile-content>
+                      <v-list-tile-title>{{date}} at {{time}}</v-list-tile-title>
+                    </v-list-tile-content>
+                  </v-list-tile>
+                  <v-list-tile>
+                    <v-list-tile-avatar>
+                      <v-icon>gavel</v-icon>
+                    </v-list-tile-avatar>
+                    <v-list-tile-content>
+                      <v-list-tile-title>{{prettyLocation}}</v-list-tile-title>
+                    </v-list-tile-content>
+                  </v-list-tile>
+
+                </v-list>
+
+
+                <v-divider></v-divider>
+              </v-card>
+
+              <v-btn
+                  color="primary"
+                  @click="save"
+              >
+                Save
               </v-btn>
               <v-btn @click="show = false" flat>Cancel</v-btn>
 
@@ -131,7 +207,11 @@
 </template>
 
 <script>
+  import * as actions from '../store/action-types'
+  import withSnackbar from './mixins/withSnackbar'
   export default {
+    mixins: [withSnackbar],
+
     mounted() {
       console.log('Component mounted.')
     },
@@ -144,7 +224,7 @@
         location_id: false,
         location: '',
         food_id: false,
-        date:'',
+        date: '',
         time: '',
         portionParameters: {
           step: [1, 2, 4, 6, 8]
@@ -156,6 +236,12 @@
       food: function() {
         return this.$store.state.feeding.foods;
       },
+      food_type: function() {
+        return this.food_id ? this.food[this.food_id].name : '';
+      },
+      prettyLocation: function() {
+        return this.location ? this.location.name + ' ' +this.location.locality + ' ' + this.location.country : '';
+      },
       prettyPortion: function() {
         if (this.food_id === false)
           return '';
@@ -166,24 +252,44 @@
         return parts[0] === '0' ? '' : parts[0] + this.fraction(parts[1]) + this.food[this.food_id].portion;
       },
       step1Complete: function() {
-        return this.quantity > 0 && this.food_id !== false && this.duck_count!==0
+        return this.quantity > 0 && this.food_id !== false && this.duck_count !== 0
       },
       step2Complete: function() {
-        return this.date !=='' && this.time !== '';
+        return this.date !== '' && this.time !== '';
       },
       step3Complete: function() {
-        return (this.location !=='' || this.location_id !== false);
+        return (this.location !== '' || this.location_id !== false);
       },
+      datetime(){
+        return this.date + ' ' + this.time +':00'
+      },
+
 
     },
     methods: {
-      getAddressData(data){
+      getAddressData(data) {
+        this.location = data;
+
         console.log(data)
 
       },
+      save() {
+        console.log('saving')
+        this.$store.dispatch(actions.CREATE_FEEDING,{
+          quantity: this.quantity,
+          duck_count: this.duck_count,
+          location_id: this.location_id,
+          location: this.location,
+          food_id: this.food_id,
+          date: this.datetime,
+        }).then(response => {
 
-      previousFeedings(date){
-        console.log('prev' +date)
+        });
+
+      },
+
+      previousFeedings(date) {
+        console.log('prev' + date)
         return true;
       },
       selectFood: function(id) {

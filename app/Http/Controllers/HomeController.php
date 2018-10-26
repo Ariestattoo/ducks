@@ -32,7 +32,7 @@ class HomeController extends Controller
          */
       $data['feedings'] = $user->recentFeedings();
       $data['location'] = $user->location();
-      $data['foods'] = Food::all();
+      $data['foods'] = Food::all()->keyBy('id');
       $data['pending'] = Task::whereUserId($user->id)->get();
 
 

@@ -13,7 +13,7 @@ class FeedingRequest extends FormRequest
    */
   public function authorize()
   {
-    return false;
+    return true;
   }
 
   /**
@@ -27,10 +27,10 @@ class FeedingRequest extends FormRequest
       'quantity'    => 'required|numeric',
       'duck_count'  => 'required|integer',
       'location'    => 'required_without:location_id',
-      'location_id' => 'required_without:location|exists:locations,id',
+      'location_id' => 'required_without:location',
       'food_id'     => 'required|exists:foods,id',
       //TODO timestamp validator
-      'time'        => ''
+      'date'        => 'required|date',
 
     ];
   }
