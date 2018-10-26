@@ -26,10 +26,11 @@ class FeedingRequest extends FormRequest
     return [
       'quantity'    => 'required|numeric',
       'duck_count'  => 'required|integer',
-      'location_id' => 'required|exists:locations,id',
+      'location'    => 'required_without:location_id',
+      'location_id' => 'required_without:location|exists:locations,id',
       'food_id'     => 'required|exists:foods,id',
-     //TODO timestamp validator
-      'time' => ''
+      //TODO timestamp validator
+      'time'        => ''
 
     ];
   }

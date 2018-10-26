@@ -23,7 +23,13 @@ Vue.component('snackbar', require('./components/SnackBarComponent.vue'));
 Vue.component('gravatar', require('./components/GravatarComponent.vue'));
 Vue.component('previous-feedings', require('./components/PreviousFeedingsComponent'));
 Vue.component('pending-feedings', require('./components/PendingFeedingsComponent'));
-Vue.component('create-feeding', require('./components/CreateFeedingComponent'));
+Vue.component('create-feeding', require('./components/CreateFeedingComponent'))
+
+
+import VuetifyGoogleAutocomplete from 'vuetify-google-autocomplete';
+Vue.use(VuetifyGoogleAutocomplete, {
+  apiKey: 'AIzaSyDJ7pXHk8CSjRlzyzxTGxqS3rHgT04yyRY', // Can also be an object. E.g, for Google Maps Premium API, pass `{ client: <YOUR-CLIENT-ID> }`
+});
 
 window.Vuetify = require('vuetify');
 Vue.use(Vuetify)
