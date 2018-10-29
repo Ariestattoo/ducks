@@ -52,4 +52,6 @@ RUN chown -R www-data:www-data \
         /var/www/storage \
         /var/www/bootstrap/cache
 
-#RUN php artisan optimize; exit 0
+RUN php artisan optimize;
+RUN php artisan migrate
+RUN php artisan db:seed

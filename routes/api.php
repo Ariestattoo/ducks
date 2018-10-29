@@ -1,7 +1,5 @@
 <?php
 
-use Illuminate\Http\Request;
-
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -15,7 +13,5 @@ use Illuminate\Http\Request;
 
 Route::middleware('auth:api')->get('/user', 'HomeController@user');
 
-Route::group(['prefix'=>'v1','middleware' => 'auth:api'], function() {
-	Route::put('/user', 'LoggedUserController@update');
-	Route::post('/feeding/create','FeedingController@store');
-});
+Route::middleware('auth:api')->put('v1/user', 'LoggedUserController@update');
+Route::middleware('auth:api')->post('v1/feeding/create', 'FeedingController@store');
