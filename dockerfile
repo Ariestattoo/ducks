@@ -42,7 +42,7 @@ COPY . /var/www
 WORKDIR /var/www
 
 #RUN composer dump-autoload
-RUN  composer install --no-dev --no-scripts
+RUN  composer install --no-scripts
 
 COPY docker/app /var/www
 
@@ -52,6 +52,6 @@ RUN chown -R www-data:www-data \
         /var/www/storage \
         /var/www/bootstrap/cache
 
-RUN php artisan optimize;
-RUN php artisan migrate
-RUN php artisan db:seed
+#RUN php artisan optimize
+#RUN php artisan migrate
+#RUN php artisan db:seed
