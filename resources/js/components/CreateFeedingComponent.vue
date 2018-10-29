@@ -38,14 +38,7 @@
                               step="25"
                               min="25"
                               max="400">
-                      <template
-                          slot="thumb-label"
-                          slot-scope="props"
-                      >
-          <span>
-            {{ label(props.value) }}
-          </span>
-                      </template>
+
                     </v-slider>
                     <v-divider></v-divider>
                     <h3>Number of ducks fed</h3>
@@ -209,6 +202,7 @@
 <script>
   import * as actions from '../store/action-types'
   import withSnackbar from './mixins/withSnackbar'
+
   export default {
     mixins: [withSnackbar],
 
@@ -240,7 +234,7 @@
         return this.food_id ? this.food[this.food_id].name : '';
       },
       prettyLocation: function() {
-        return this.location ? this.location.name + ' ' +this.location.locality + ' ' + this.location.country : '';
+        return this.location ? this.location.name + ' ' + this.location.locality + ' ' + this.location.country : '';
       },
       prettyPortion: function() {
         if (this.food_id === false)
@@ -249,7 +243,8 @@
         const parts = fraction.toString().split('.');
         if (parts.length === 1)
           return parts[0] + this.food[this.food_id].portion;
-        return parts[0] === '0' ? '' : parts[0] + this.fraction(parts[1]) + this.food[this.food_id].portion;
+        const prefix = parts[0] === '0' ? '' : parts[0];
+        return prefix + ' ' + this.fraction(parts[1]) + this.food[this.food_id].portion;
       },
       step1Complete: function() {
         return this.quantity > 0 && this.food_id !== false && this.duck_count !== 0
@@ -260,8 +255,8 @@
       step3Complete: function() {
         return (this.location !== '' || this.location_id !== false);
       },
-      datetime(){
-        return this.date + ' ' + this.time +':00'
+      datetime() {
+        return this.date + ' ' + this.time + ':00'
       },
 
 
@@ -275,7 +270,7 @@
       },
       save() {
         console.log('saving')
-        this.$store.dispatch(actions.CREATE_FEEDING,{
+        this.$store.dispatch(actions.CREATE_FEEDING, {
           quantity: this.quantity,
           duck_count: this.duck_count,
           location_id: this.location_id,
@@ -283,7 +278,7 @@
           food_id: this.food_id,
           date: this.datetime,
         }).then(response => {
-
+          this.show = false;
         });
 
       },

@@ -60,7 +60,7 @@ class FeedingController extends Controller
 
     $result = $feeding->save();
     if ($request->ajax()) {
-      return response()->json($feeding);
+      return response()->json( $user->recentFeedings(true)[0]);
     }
 
 

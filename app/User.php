@@ -72,7 +72,7 @@ class User extends Authenticatable
     return $this->hasMany(Feeding::class);
   }
 
-  public function recentFeedings()
+  public function recentFeedings($last=false)
   {
     $query = <<<EOD
  SELECT 
@@ -86,10 +86,10 @@ FROM
         JOIN
     ducks.foods fs ON f.food_id = fs.id
 WHERE
-    f.user_id = 1
-ORDER BY f.created_at DESC limit 10;
+    f.user_id = ?
+ORDER BY f.created_at DESC limit ?;
 EOD;
-    return DB::select($query,[$this->id]);
+    return DB::select($query,[$this->id,$last?1:10]);
 
   }
 

@@ -6,6 +6,7 @@ use App\Food;
 use App\Task;
 use App\User;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Http\Request;
 
 class HomeController extends Controller
 {
@@ -37,5 +38,11 @@ class HomeController extends Controller
 
 
     return view('home',['data'=>$data]);
+  }
+
+  public function user(Request $request)
+  {
+    return $request->user();
+
   }
 }

@@ -6,7 +6,7 @@ export default {
   [ actions.CREATE_FEEDING ] (context, feeding) {
     return new Promise((resolve, reject) => {
       feedingApi.create_feeding(feeding).then(response => {
-        context.commit(mutations.SET_PREVIOUS_FEEDINGS, response)
+        context.commit(mutations.SET_PREVIOUS_FEEDINGS, response.data)
         resolve(response)
       }).catch(error => {
         reject(error)
