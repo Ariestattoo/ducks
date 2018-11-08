@@ -18485,6 +18485,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         food_id: this.food_id,
         date: this.datetime
       }).then(function (response) {
+        _this.reset();
         _this.show = false;
       });
     },
@@ -18498,11 +18499,13 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     },
     reset: function reset() {
       this.quantity = 0;
-      this.duck_count = false;
+      this.duck_count = 0;
       this.location_id = false;
       this.location = '';
       this.food_id = false;
-      this.time = false;
+      this.date = '';
+      this.time = '';
+      this.e1 = 1;
     },
     label: function label(value) {
       return value;

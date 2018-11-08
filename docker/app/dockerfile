@@ -38,13 +38,13 @@ RUN apk add --no-cache --virtual .build-deps \
 COPY composer.lock composer.json /var/www/
 
 COPY database /var/www/database
-COPY . /var/www
+
 WORKDIR /var/www
 
 #RUN composer dump-autoload
 RUN  composer install --no-scripts
 
-COPY docker/app /var/www
+COPY . /var/www
 
 
 
@@ -52,6 +52,7 @@ RUN chown -R www-data:www-data \
         /var/www/storage \
         /var/www/bootstrap/cache
 
-#RUN php artisan optimize
-#RUN php artisan migrate
-#RUN php artisan db:seed
+
+
+RUN php artisan optimize
+RUN php artisan config:clear

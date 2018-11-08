@@ -278,6 +278,7 @@
           food_id: this.food_id,
           date: this.datetime,
         }).then(response => {
+          this.reset();
           this.show = false;
         });
 
@@ -292,11 +293,13 @@
       },
       reset: function() {
         this.quantity = 0;
-        this.duck_count = false;
+        this.duck_count = 0;
         this.location_id = false;
         this.location = '';
         this.food_id = false;
-        this.time = false;
+        this.date='';
+        this.time = '';
+        this.e1 = 1;
       },
       label: function(value) {
         return value;
